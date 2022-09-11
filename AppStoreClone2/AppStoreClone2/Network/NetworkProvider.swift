@@ -56,22 +56,13 @@ struct NetworkProvider {
                 return
             }
             
-            switch api {
-            case is Gettable:
-                if let data = data {
-                    guard let decodedData = JSONParser<T>().decode(from: data) else {
-                        emitter.onError(JSONParserError.decodingFail)
-                        return
-                    }
-                    
-                    emitter.onNext(decodedData)
+            if let data = data {
+                guard let decodedData = JSONParser<T>().decode(from: data) else {
+                    emitter.onError(JSONParserError.decodingFail)
+                    return
                 }
-            case is Postable:
-                if let data = data as? T {
-                    emitter.onNext(data)
-                }
-            default:
-                return
+                
+                emitter.onNext(decodedData)
             }
             
             emitter.onCompleted()

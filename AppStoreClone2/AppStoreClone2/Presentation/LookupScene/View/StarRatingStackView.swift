@@ -11,7 +11,7 @@ class StarRatingStackView: UIStackView {
     
     // MARK: - Properties
     // ???: 외부에서 접근가능하게 해도 괜찮을까? (Cell prepareReuse에서 초기화하기 위한 목적)
-//    weak var starImageViews: [StarImageView]?
+    var starImageViews: [StarImageView]?
     private let maxStarCount = 5
     
     // MARK: - Initializers
@@ -21,16 +21,15 @@ class StarRatingStackView: UIStackView {
         configureStackView()
     }
     
-    // FIXME: 제대로 deinit되지 않는 문제 발생
-//    deinit {
-//        starImageViews?.forEach { removeArrangedSubview($0) }
-//    }
-    
     // MARK: - Methods
     
     func apply(rating: Double, tintColor: UIColor = .systemGray) {
-        let starImageViews = configureStarImageView(rating, tintColor)
+        starImageViews = configureStarImageView(rating, tintColor)
         configureHierarchy(with: starImageViews)
+    }
+    
+    func removeAllArrangedSubviews() {
+        starImageViews?.forEach { removeArrangedSubview($0) }
     }
     
     private func configureStarImageView(_ rating: Double, _ tintColor: UIColor) -> [StarImageView] {

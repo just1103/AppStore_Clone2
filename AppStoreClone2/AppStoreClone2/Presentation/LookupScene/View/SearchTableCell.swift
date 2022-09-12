@@ -101,7 +101,7 @@ final class SearchTableCell: UITableViewCell {
         appIconImageView.image = nil
         titleLabel.text = nil
         genreLabel.text = nil
-//        starRatingStackView.starImageViews = nil  // FIXME: 초기화되지 않는 문제
+        starRatingStackView.removeAllArrangedSubviews()
         ratingCountLabel.text = nil
         favoriteButton.setImage(nil, for: .normal)
     }

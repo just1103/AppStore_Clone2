@@ -35,7 +35,6 @@ final class LookupViewController: UIViewController {
         tableView.isScrollEnabled = true
         tableView.isUserInteractionEnabled = true
         tableView.separatorStyle = .singleLine
-//        tableView.separatorInset.left = 0
         return tableView
     }()
     
@@ -69,6 +68,7 @@ final class LookupViewController: UIViewController {
     private func configureUI() {
         configureNavigationBar()
         configureSearchTextField()
+        configureSearchTableView()
         configureHierarchy()
     }
     
@@ -81,18 +81,31 @@ final class LookupViewController: UIViewController {
         searchTextField.delegate = self
     }
     
+    private func configureSearchTableView() {
+        searchTableView.register(cellType: SearchTableCell.self)
+        // FIXME: Cell constraints broken
+//        searchTableView.estimatedRowHeight = UITableView.automaticDimension
+//        searchTableView.rowHeight = UITableView.automaticDimension
+    }
+    
     private func configureHierarchy() {
-        view.addSubview(searchTextField)
-        view.addSubview(descriptionLabel)
+        [searchTextField, descriptionLabel, searchTableView]
+            .forEach { view.addSubview($0) }
         
+        let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            searchTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 12),
-            searchTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -12),
+            searchTextField.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 10),
+            searchTextField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 12),
+            searchTextField.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -12),
             
             descriptionLabel.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 12),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 12),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -12),
+            descriptionLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 12),
+            descriptionLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -12),
+            
+            searchTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 10),
+            searchTableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 12),
+            searchTableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -12),
+            searchTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
     
@@ -127,14 +140,25 @@ extension LookupViewController {
             .drive(searchTextField.rx.placeholder)
             .disposed(by: disposeBag)
         
-        output.descriptionLabelText
-            .drive(descriptionLabel.rx.text)
+//        output.descriptionLabelText
+//            .drive(descriptionLabel.rx.text)
+//            .disposed(by: disposeBag)
+        
+        output.appItems
+            .drive(searchTableView.rx.items(
+                cellIdentifier: SearchTableCell.reuseIdentifier,
+                cellType: SearchTableCell.self)
+            ) { row, appItem, cell in
+                cell.apply(appItem: appItem)
+            }
             .disposed(by: disposeBag)
     }
+    
 }
 
 // MARK: - TextFieldDelegate
 extension LookupViewController: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let searchText = textField.text else {
             return false
@@ -143,4 +167,5 @@ extension LookupViewController: UITextFieldDelegate {
         
         return true
     }
+    
 }

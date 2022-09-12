@@ -280,13 +280,13 @@
 			isa = PBXGroup;
 			children = (
 				36C41CF328CC7B96006BC3B2 /* Array+Subscript.swift */,
-				36C41CF428CC7B96006BC3B2 /* UICollectionViewCell+Identifier.swift */,
 				36C41CF528CC7B96006BC3B2 /* Int+DigitWrapping.swift */,
-				36C41CF628CC7B96006BC3B2 /* UITableViewCell+Identifier.swift */,
 				36C41CF728CC7B96006BC3B2 /* UIImageView+Load+Cache.swift */,
 				36C41CF828CC7B96006BC3B2 /* UIStackView+VerticalSeparator.swift */,
 				36C41CF928CC7B96006BC3B2 /* UICollectionView+CellRegister+Reuse.swift */,
+				36C41CF428CC7B96006BC3B2 /* UICollectionViewCell+Identifier.swift */,
 				36C41CFA28CC7B96006BC3B2 /* UITableView+CellRegister+Reuse.swift */,
+				36C41CF628CC7B96006BC3B2 /* UITableViewCell+Identifier.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

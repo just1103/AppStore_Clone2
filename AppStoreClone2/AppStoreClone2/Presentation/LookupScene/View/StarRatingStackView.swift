@@ -11,7 +11,7 @@ class StarRatingStackView: UIStackView {
     
     // MARK: - Properties
     // ???: 외부에서 접근가능하게 해도 괜찮을까? (Cell prepareReuse에서 초기화하기 위한 목적)
-    var starImageViews: [StarImageView]?
+//    weak var starImageViews: [StarImageView]?
     private let maxStarCount = 5
     
     // MARK: - Initializers
@@ -21,20 +21,28 @@ class StarRatingStackView: UIStackView {
         configureStackView()
     }
     
+    // FIXME: 제대로 deinit되지 않는 문제 발생
+//    deinit {
+//        starImageViews?.forEach { removeArrangedSubview($0) }
+//    }
+    
     // MARK: - Methods
     
-    func apply(rating: Double) {
-        starImageViews = configureStarImageView(with: rating)
+    func apply(rating: Double, tintColor: UIColor = .systemGray) {
+        let starImageViews = configureStarImageView(rating, tintColor)
         configureHierarchy(with: starImageViews)
     }
     
-    private func configureStarImageView(with rating: Double) -> [StarImageView] {
+    private func configureStarImageView(_ rating: Double, _ tintColor: UIColor) -> [StarImageView] {
         let starCountByKind = calculateStarCountByKind(with: rating)
         
         var starImageViews = [StarImageView]()
-        starImageViews += (0..<starCountByKind.filled).map { _ in StarImageView(kind: .filled) }
-        starImageViews += (0..<starCountByKind.halfFilled).map { _ in StarImageView(kind: .halfFilled) }
-        starImageViews += (0..<starCountByKind.empty).map { _ in StarImageView(kind: .empty) }
+        starImageViews += (0..<starCountByKind.filled)
+            .map { _ in StarImageView(kind: .filled, tintColor: tintColor) }
+        starImageViews += (0..<starCountByKind.halfFilled)
+            .map { _ in StarImageView(kind: .halfFilled, tintColor: tintColor) }
+        starImageViews += (0..<starCountByKind.empty)
+            .map { _ in StarImageView(kind: .empty, tintColor: tintColor) }
         
         return starImageViews
     }

@@ -35,11 +35,11 @@ final class StarImageView: UIImageView {
     
     // MARK: - Methods
     
-    private func configureUI(_ tintColor: UIColor = .systemGray) {
+    private func configureUI(_ tintColor: UIColor) {
         translatesAutoresizingMaskIntoConstraints = false
         contentMode = .scaleAspectFit
         heightAnchor.constraint(equalTo: widthAnchor).isActive = true
-        tintColor = tintColor
+        self.tintColor = tintColor  // TODO: 확인
     }
     
 }

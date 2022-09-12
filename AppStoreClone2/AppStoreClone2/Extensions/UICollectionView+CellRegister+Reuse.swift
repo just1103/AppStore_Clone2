@@ -9,7 +9,7 @@ import UIKit
 
 extension UICollectionView {
     func register<T: UICollectionViewCell>(cellType: T.Type) {
-        register(cellType, forCellWithReuseIdentifier: cellType.reuseIdentifier)
+        register(cellType, forCellWithReuseIdentifier: T.reuseIdentifier)
     }
     
     func dequeueReusableCell<T: UICollectionViewCell>(withClass name: T.Type, for indexPath: IndexPath) -> T {

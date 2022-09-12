@@ -22,7 +22,8 @@ final class LookupViewModel: ViewModelProtocol {
         let navigationTitleText: Driver<String>
         let backButtonTitleText: Driver<String>
         let searchTextFieldPlaceHolderText: Driver<String>
-        let descriptionLabelText: Driver<String>
+//        let descriptionLabelText: Driver<String>
+        let appItems: Driver<[AppItem]>
     }
     
     // MARK: - Properties
@@ -42,14 +43,15 @@ final class LookupViewModel: ViewModelProtocol {
     
     func transform(_ input: Input) -> Output {
         onSearchTextDidReturn(input.searchTextDidReturn)
-        validateAPIResponse()
+//        validateAPIResponse()
         onViewWillAppear(input.viewWillAppear)
         
         return Output(
             navigationTitleText: navigationTitleText(),
             backButtonTitleText: backButtonTitleText(),
             searchTextFieldPlaceHolderText: searchTextFieldPlaceHolderText(),
-            descriptionLabelText: descriptionLabelText.asDriver(onErrorJustReturn: "")
+//            descriptionLabelText: descriptionLabelText.asDriver(onErrorJustReturn: ""),
+            appItems: fetchAppItems()
         )
     }
     
@@ -59,43 +61,36 @@ final class LookupViewModel: ViewModelProtocol {
             .disposed(by: disposeBag)
     }
     
-    private func validateAPIResponse() {
-        // TODO: searchText가 넘어올 때마다 fetchData를 시도하고 결과를 descriptionLabelText (BehaviorRelay)에다가 보냄
-        // FIXME: 유효하지 않은 AppID를 입력했을 때 desriptionText가 제대로 전달되지 않음
-        currentSearchText
-            .distinctUntilChanged()
-            .filter { $0.isEmpty == false }
-            .debounce(.milliseconds(600), scheduler: ConcurrentDispatchQueueScheduler.init(qos: .default))
-            .subscribe(onNext: { [weak self] searchText in
-                guard let self = self else { return }
-
-                _ = self.fetchData(with: searchText)
-                    .map { searchResultDTO in
-                        guard
-                            searchResultDTO.resultCount == 1,
-                            let appItemDTO = searchResultDTO.results.first
-                        else {
-                            self.descriptionLabelText.accept(Text.descriptionLabelTextIfRequestFail)
-                            return
-                        }
-
-                        let appItem = AppItem.convert(appItemDTO: appItemDTO)
-                        DispatchQueue.main.async { [weak self] in
-    //                        self.coordinator.showDetailPage(with: appItem)
-                        }
-
-                        self.descriptionLabelText.accept("")
-                    }
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func fetchData(with searchText: String) -> Observable<SearchResultDTO> {
-        return NetworkProvider().fetchData(
-            api: ItunesAPI.AppLookup(appID: searchText),
-            decodingType: SearchResultDTO.self
-        )
-    }
+//    private func validateAPIResponse() {
+//        // TODO: searchText가 넘어올 때마다 fetchData를 시도하고 결과를 descriptionLabelText (BehaviorRelay)에다가 보냄
+//        // FIXME: 유효하지 않은 AppID를 입력했을 때 desriptionText가 제대로 전달되지 않음
+//        currentSearchText
+//            .distinctUntilChanged()
+//            .filter { $0.isEmpty == false }
+//            .debounce(.milliseconds(600), scheduler: ConcurrentDispatchQueueScheduler.init(qos: .default))
+//            .subscribe(onNext: { [weak self] searchText in
+//                guard let self = self else { return }
+//
+//                _ = self.fetchData(with: searchText)
+//                    .map { searchResultDTO in
+//                        guard
+//                            searchResultDTO.resultCount == 1,
+//                            let appItemDTO = searchResultDTO.results.first
+//                        else {
+//                            self.descriptionLabelText.accept(Text.descriptionLabelTextIfRequestFail)
+//                            return
+//                        }
+//
+//                        let appItem = AppItem.convert(appItemDTO: appItemDTO)
+//                        DispatchQueue.main.async { [weak self] in
+//    //                        self.coordinator.showDetailPage(with: appItem)
+//                        }
+//
+//                        self.descriptionLabelText.accept("")
+//                    }
+//            })
+//            .disposed(by: disposeBag)
+//    }
     
     private func onViewWillAppear(_ input: Observable<Void>) {
         // TODO: "" 정상 출력되는지 확인
@@ -126,6 +121,40 @@ final class LookupViewModel: ViewModelProtocol {
     private func searchTextFieldPlaceHolderText() -> Driver<String> {
         return Observable.just(Text.searchTextFieldPlaceHolder)
             .asDriver(onErrorJustReturn: "")
+    }
+    
+    private func fetchAppItems() -> Driver<[AppItem]> {
+        return currentSearchText
+            .distinctUntilChanged()
+            .filter { $0.isEmpty == false }
+            .debounce(.milliseconds(300), scheduler: ConcurrentDispatchQueueScheduler.init(qos: .default))
+            .flatMap { [weak self] searchText -> Observable<[AppItem]> in
+                guard let self = self else {
+                    return Observable.just([])
+                }
+                
+                return self.fetchData(with: searchText)
+                    .map { searchResultDTO -> [AppItem] in
+                        guard
+                            searchResultDTO.resultCount == 1,  // TODO: SearchAPI 사용 시 변경
+                            let appItemDTO = searchResultDTO.results.first
+                        else {
+                            return []
+                        }
+
+                        let appItem = [AppItem.convert(appItemDTO: appItemDTO)]
+
+                        return appItem
+                    }
+            }
+            .asDriver(onErrorJustReturn: [])
+    }
+    
+    private func fetchData(with searchText: String) -> Observable<SearchResultDTO> {
+        return NetworkProvider().fetchData(
+            api: ItunesAPI.AppLookup(appID: searchText),
+            decodingType: SearchResultDTO.self
+        )
     }
     
 }

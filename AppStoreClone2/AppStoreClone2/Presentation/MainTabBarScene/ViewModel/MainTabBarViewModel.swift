@@ -32,6 +32,8 @@ final class MainTabBarViewModel {
     
     struct Output {
         let navigationTitleText: Driver<String>
+        let tabBarTintColor: Driver<UIColor>
+        let tabBarUnselectedItemTintColor: Driver<UIColor>
 //        let tabBarPages: Driver<[UINavigationController]> // ViewControllers에 할당
     }
     
@@ -56,7 +58,9 @@ final class MainTabBarViewModel {
         onTabBarItemDidSelected(input.tabBarIndexDidSelect)
         
         return Output(
-            navigationTitleText: navigationTitleText()
+            navigationTitleText: navigationTitleText(),
+            tabBarTintColor: tabBarTintColor(),
+            tabBarUnselectedItemTintColor: tabBarUnselectedItemTintColor()
 //            tabBarPages: <#T##Driver<[UINavigationController]>#>
         )
     }
@@ -73,6 +77,16 @@ final class MainTabBarViewModel {
             .distinctUntilChanged()
             .map { $0.navigationTitle }
             .asDriver(onErrorJustReturn: TabBarItemKind.lookup.navigationTitle)
+    }
+    
+    private func tabBarTintColor() -> Driver<UIColor> {
+        return Observable.just(UIColor.systemBlue)
+            .asDriver(onErrorJustReturn: UIColor.systemBlue)
+    }
+    
+    private func tabBarUnselectedItemTintColor() -> Driver<UIColor> {
+        return Observable.just(UIColor.lightGray)
+            .asDriver(onErrorJustReturn: UIColor.lightGray)
     }
     
 //    private func tabBarPages() -> Driver<[UINavigationController]> {

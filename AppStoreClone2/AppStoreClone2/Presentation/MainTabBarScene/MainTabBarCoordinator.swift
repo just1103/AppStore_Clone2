@@ -44,9 +44,6 @@ final class MainTabBarCoordinator: CoordinatorProtocol {
         childCoordinators.append(lookupCoordinator)
 //        childCoordinators.append(favoriteCoordinator)
         
-//        lookupCoordinator.delegate = self
-//        favoriteCoordinator.delegate = self
-        
         // ???: ViewController 생성하는 역할을 누가 하는게 나을까?
         let lookupViewController = lookupCoordinator.createViewController()
 //        let favoriteViewController = favoriteCoordinator.createViewController()

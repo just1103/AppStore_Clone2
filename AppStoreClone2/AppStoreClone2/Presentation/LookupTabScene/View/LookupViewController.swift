@@ -48,6 +48,15 @@ final class LookupViewController: UIViewController {
     convenience init(viewModel: LookupViewModel) {
         self.init()
         self.viewModel = viewModel
+        configureTabBar()
+    }
+    
+    // ???: 여기서 setup하지 않으면 TabBar가 안생기는 문제
+    private func configureTabBar() {
+        tabBarItem.title = "테스트"
+        tabBarItem.image = UIImage(systemName: "plus")
+//        tabBarItem.selectedImage = UIImage(systemName: "plus")
+//        tabBarItem.setTitleTextAttributes([.font: Design.tabBarTitleFont], for: .normal)
     }
     
     // MARK: - Lifecycle Method
@@ -56,11 +65,11 @@ final class LookupViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         bind()
+//        configureTabBar()  // 해결 안됨
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        clearDescriptionLabel()
         updateNavigationTitleDisplayMode()
     }
 
@@ -110,17 +119,16 @@ final class LookupViewController: UIViewController {
         ])
     }
     
-//    private func clearDescriptionLabel() {
-//        descriptionLabel.text = ""  // TODO: ViewWillAppear event와 연결
-//    }
-    
     private func updateNavigationTitleDisplayMode() {
         navigationItem.largeTitleDisplayMode = .always
     }
+    
 }
 
 // MARK: - Rx Binding Methods
+
 extension LookupViewController {
+    
     private func bind() {
         let input = LookupViewModel.Input(
             searchTextDidReturn: searchTextDidReturn.asObservable(),
@@ -129,6 +137,18 @@ extension LookupViewController {
 
         guard let output = viewModel?.transform(input) else { return }
 
+        output.tabBarItemTitleText
+            .drive(tabBarItem.rx.title)
+            .disposed(by: disposeBag)
+
+        output.tabBarItemImage
+            .drive(tabBarItem.rx.image)
+            .disposed(by: disposeBag)
+
+        output.tabBarItemSelectedImage
+            .drive(tabBarItem.rx.selectedImage)
+            .disposed(by: disposeBag)
+        
         output.navigationTitleText
             .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
@@ -140,10 +160,6 @@ extension LookupViewController {
         output.searchTextFieldPlaceHolderText
             .drive(searchTextField.rx.placeholder)
             .disposed(by: disposeBag)
-        
-//        output.descriptionLabelText
-//            .drive(descriptionLabel.rx.text)
-//            .disposed(by: disposeBag)
         
         output.appItems
             .drive(searchTableView.rx.items(
@@ -158,6 +174,7 @@ extension LookupViewController {
 }
 
 // MARK: - TextFieldDelegate
+
 extension LookupViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

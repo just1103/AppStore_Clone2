@@ -77,18 +77,24 @@ extension MainTabBarController {
 //            tabBarIndexDidSelect: tabBar.rx.didSelectItem.asObservable()
 //                self.rx.selectedIndex
         )
-        
-        
-        
+
         let output = viewModel.transform(input)
+        
+        output.navigationTitleText
+            .drive(navigationItem.rx.title)
+            .disposed(by: disposeBag)
+
+        output.tabBarTintColor
+            .drive(tabBar.rx.tintColor)
+            .disposed(by: disposeBag)
+        
+        output.tabBarUnselectedItemTintColor
+            .drive(tabBar.rx.unselectedItemTintColor)
+            .disposed(by: disposeBag)
         
 //        output.tabBarPages
 //            .drive(viewControllers)
 //            .dispose(by: disposeBag)
-        
-        output.navigationTitleText
-            .drive(self.navigationItem.rx.title)
-            .disposed(by: disposeBag)
     }
     
 }

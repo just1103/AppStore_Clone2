@@ -9,116 +9,86 @@ import RxSwift
 import RxCocoa
 import Foundation
 
-final class LookupViewModel { //: ViewModelProtocol {
+final class LookupViewModel: ViewModelProtocol {
     
     // MARK: - Nested Types
     
     struct Input {
         let searchTextDidReturn: Observable<String>
+        let viewWillAppear: Observable<Void>
     }
     
     struct Output {
+        let navigationTitleText: Driver<String>
+        let backButtonTitleText: Driver<String>
+        let searchTextFieldPlaceHolderText: Driver<String>
         let descriptionLabelText: Driver<String>
     }
     
     // MARK: - Properties
+    
     private weak var coordinator: LookupCoordinator!
     private let disposeBag = DisposeBag()
-    
-    // ???: 이거 왜 필요하지? Input -> Ouput에 바로 연결시키면 안되나 (inout 매개변수 개념처럼 보이는데...)
-    // 추측: Input-Output 1:1 관계가 아니여서 좀더 유연하게 활용가능해서
     private let currentSearchText = BehaviorRelay<String>(value: "")
+    private let descriptionLabelText = BehaviorRelay<String>(value: "")
     
     // MARK: - Initializers
+    
     init(coordinator: LookupCoordinator) {
         self.coordinator = coordinator
     }
     
     // MARK: - Methods
-//    func transform(_ input: Input) -> Output {
-//        let isAPIResponseValid = configureSearchTextDidReturnSubscriber(for: input.searchTextDidReturn)
-//
-//        let output = Output(isAPIResponseValid: isAPIResponseValid)
-//
-//        return output
-//    }
-
+    
     func transform(_ input: Input) -> Output {
         onSearchTextDidReturn(input.searchTextDidReturn)
-
-        return Output(descriptionLabelText: isAPIResponseValid())
+        validateAPIResponse()
+        onViewWillAppear(input.viewWillAppear)
+        
+        return Output(
+            navigationTitleText: navigationTitleText(),
+            backButtonTitleText: backButtonTitleText(),
+            searchTextFieldPlaceHolderText: searchTextFieldPlaceHolderText(),
+            descriptionLabelText: descriptionLabelText.asDriver(onErrorJustReturn: "")
+        )
     }
     
     private func onSearchTextDidReturn(_ input: Observable<String>) {
         input
-            .bind(to: currentSearchText)
+            .bind(to: currentSearchText) // ???: 여러 곳에서 사용하려면 불가피한 binding인가?
             .disposed(by: disposeBag)
     }
     
-    private func isAPIResponseValid() -> Driver<String> {
-        return currentSearchText
+    private func validateAPIResponse() {
+        // TODO: searchText가 넘어올 때마다 fetchData를 시도하고 결과를 descriptionLabelText (BehaviorRelay)에다가 보냄
+        // FIXME: 유효하지 않은 AppID를 입력했을 때 desriptionText가 제대로 전달되지 않음
+        currentSearchText
+            .distinctUntilChanged()
             .filter { $0.isEmpty == false }
-            .map { [weak self] searchText -> String in
-                guard let self = self else {
-                    return Text.descriptionLabelTextIfRequestFail
-                }
-                return ""
+            .debounce(.milliseconds(600), scheduler: ConcurrentDispatchQueueScheduler.init(qos: .default))
+            .subscribe(onNext: { [weak self] searchText in
+                guard let self = self else { return }
 
-                // 그냥 String만 와야하는데 map을 쓰니까 Observable<String>이 나오는 문제
-                // flatMap을 써도 반환값을 Observable로 예상함
-                // fetchData 반환값을 다른걸로 받아야하나?
-                return self.fetchData(with: searchText).map { searchResultDTO -> String in
-                    guard
-                        let self = self,
-                        searchResultDTO.resultCount == 1,
-                        let appItemDTO = searchResultDTO.results.first
-                    else {
-                        return Text.descriptionLabelTextIfRequestFail
+                _ = self.fetchData(with: searchText)
+                    .map { searchResultDTO in
+                        guard
+                            searchResultDTO.resultCount == 1,
+                            let appItemDTO = searchResultDTO.results.first
+                        else {
+                            self.descriptionLabelText.accept(Text.descriptionLabelTextIfRequestFail)
+                            return
+                        }
+
+                        let appItem = AppItem.convert(appItemDTO: appItemDTO)
+                        DispatchQueue.main.async { [weak self] in
+    //                        self.coordinator.showDetailPage(with: appItem)
+                        }
+
+                        self.descriptionLabelText.accept("")
                     }
-
-                    let appItem = AppItem.convert(appItemDTO: appItemDTO)
-                    DispatchQueue.main.async { [weak self] in
-//                        self.coordinator.showDetailPage(with: appItem)
-                    }
-
-                    return ""
-                }
-                
-            }
-            .asDriver(onErrorJustReturn: Text.descriptionLabelTextIfRequestFail)
+            })
+            .disposed(by: disposeBag)
     }
-    
-//    private func configureSearchTextDidReturnSubscriber(
-//        for inputPublisher: AnyPublisher<String, Never>
-//    ) -> AnyPublisher<Bool, Never> {
-//        return inputPublisher
-//            .filter { $0.isEmpty == false }
-//            .flatMap { [weak self] searchText -> AnyPublisher<Bool, Never> in
-//                guard let self = self else { return Just(false).eraseToAnyPublisher() }
-//
-//                return self.fetchData(with: searchText)
-//                    .map { searchResultDTO -> Bool in
-//                        guard
-//                            searchResultDTO.resultCount == 1,
-//                            let appItemDTO = searchResultDTO.results.first
-//                        else {
-//                            return false
-//                        }
-//
-//                        let appItem = AppItem.convert(appItemDTO: appItemDTO)
-//
-//                        DispatchQueue.main.async { [weak self] in
-//                            self?.coordinator.showDetailPage(with: appItem)
-//                        }
-//
-//                        return true
-//                    }
-//                    .replaceError(with: false)
-//                    .eraseToAnyPublisher()
-//
-//            }
-//            .eraseToAnyPublisher()
-//    }
     
     private func fetchData(with searchText: String) -> Observable<SearchResultDTO> {
         return NetworkProvider().fetchData(
@@ -126,18 +96,50 @@ final class LookupViewModel { //: ViewModelProtocol {
             decodingType: SearchResultDTO.self
         )
     }
+    
+    private func onViewWillAppear(_ input: Observable<Void>) {
+        // TODO: "" 정상 출력되는지 확인
+        input
+            .map { "" }
+            .bind(to: descriptionLabelText)  // ???: main 스레드에서 안받아와도 될것 같은데.. 써도되나
+            .disposed(by: disposeBag)
+        
+//            .subscribe(onNext: {
+//                print("WillAppear!!!")
+//                searchTextFieldPlaceHolderText.accept("")
+//                // output의 descriptionLabelText에 onNext 하려면 어떻게?
+//                // descriptionLabelText를 behaviorRelay로 갖고 있어야하나?
+//            })
+//            .disposed(by: disposeBag)
+    }
+    
+    private func navigationTitleText() -> Driver<String> {
+        return Observable.just(Text.navigationTitle)
+            .asDriver(onErrorJustReturn: "")
+    }
+    
+    private func backButtonTitleText() -> Driver<String> {
+        return Observable.just(Text.backButtonTitle)
+            .asDriver(onErrorJustReturn: "")
+    }
+    
+    private func searchTextFieldPlaceHolderText() -> Driver<String> {
+        return Observable.just(Text.searchTextFieldPlaceHolder)
+            .asDriver(onErrorJustReturn: "")
+    }
+    
 }
 
 // MARK: - NameSpaces
+
 extension LookupViewModel {
+    
     private enum Text {
         static let navigationTitle = "검색"
+        static let backButtonTitle = "검색"
         static let searchTextFieldPlaceHolder = "앱 ID를 입력해주세요."
         static let descriptionLabelTextIfRequestFail = "앱 ID를 다시 확인해주세요."
         static let emptyString = ""
     }
     
-    private enum Design {
-        static let backButtonTitle = "검색"
-    }
 }

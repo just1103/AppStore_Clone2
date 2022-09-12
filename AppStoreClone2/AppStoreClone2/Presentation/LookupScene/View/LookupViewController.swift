@@ -10,11 +10,12 @@ import RxCocoa
 import UIKit
 
 final class LookupViewController: UIViewController {
+    
     // MARK: - Properties
+    
     private let searchTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-//        textField.placeholder = Text.searchTextFieldPlaceHolder
         textField.returnKeyType = .search
         textField.borderStyle = .roundedRect
         textField.clearButtonMode = .always
@@ -30,16 +31,18 @@ final class LookupViewController: UIViewController {
     }()
     
     private var viewModel: LookupViewModel!
-    private let textFieldDidReturn = PublishSubject<String>()
+    private let searchTextDidReturn = PublishSubject<String>()
     private var disposeBag = DisposeBag()
     
     // MARK: - Initializers
+    
     convenience init(viewModel: LookupViewModel) {
         self.init()
         self.viewModel = viewModel
     }
     
     // MARK: - Lifecycle Method
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -48,11 +51,12 @@ final class LookupViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        clearDescriptionLabel()
+//        clearDescriptionLabel()
         updateNavigationTitleDisplayMode()
     }
 
     // MARK: - Methods
+    
     private func configureUI() {
         configureNavigationBar()
         configureSearchTextField()
@@ -61,8 +65,6 @@ final class LookupViewController: UIViewController {
     
     private func configureNavigationBar() {
         view.backgroundColor = .systemBackground
-//        navigationItem.title = Text.navigationTitle
-//        navigationItem.backButtonTitle = Design.backButtonTitle
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
@@ -85,9 +87,9 @@ final class LookupViewController: UIViewController {
         ])
     }
     
-    private func clearDescriptionLabel() {
-        descriptionLabel.text = ""  // TODO: ViewWillAppear event와 연결
-    }
+//    private func clearDescriptionLabel() {
+//        descriptionLabel.text = ""  // TODO: ViewWillAppear event와 연결
+//    }
     
     private func updateNavigationTitleDisplayMode() {
         navigationItem.largeTitleDisplayMode = .always
@@ -97,27 +99,29 @@ final class LookupViewController: UIViewController {
 // MARK: - Rx Binding Methods
 extension LookupViewController {
     private func bind() {
-        let input = LookupViewModel.Input(searchTextDidReturn: textFieldDidReturn.asObservable())
+        let input = LookupViewModel.Input(
+            searchTextDidReturn: searchTextDidReturn.asObservable(),
+            viewWillAppear: self.rx.methodInvoked(#selector(viewWillAppear)).map { _ in }
+        )
 
         guard let output = viewModel?.transform(input) else { return }
 
-        output.descriptionLabelText
-            .drive(self.descriptionLabel.rx.text)
+        output.navigationTitleText
+            .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
         
-//        configureSearchTextViewAndLabel(with: output.isAPIResponseValid)
+        output.backButtonTitleText
+            .drive(navigationItem.rx.backButtonTitle)
+            .disposed(by: disposeBag)
+        
+        output.searchTextFieldPlaceHolderText
+            .drive(searchTextField.rx.placeholder)
+            .disposed(by: disposeBag)
+        
+        output.descriptionLabelText
+            .drive(descriptionLabel.rx.text)
+            .disposed(by: disposeBag)
     }
-    
-//    private func configureSearchTextViewAndLabel(with outputPublisher: Observable<Bool>) {
-//        outputPublisher
-//            .receive(on: DispatchQueue.main)
-//            .sink(receiveValue: { [weak self] isAPIResponseValid in
-//                if isAPIResponseValid == false {
-//                    self?.descriptionLabel.text = Text.descriptionLabelTextIfRequestFail
-//                }
-//            })
-//            .store(in: &cancellableBag)
-//    }
 }
 
 // MARK: - TextFieldDelegate
@@ -126,22 +130,8 @@ extension LookupViewController: UITextFieldDelegate {
         guard let searchText = textField.text else {
             return false
         }
-        textFieldDidReturn.onNext(searchText)
+        searchTextDidReturn.onNext(searchText)
         
         return true
     }
 }
-
-//// MARK: - NameSpaces
-//extension LookupViewController {
-//    private enum Text {
-//        static let navigationTitle = "검색"
-//        static let searchTextFieldPlaceHolder = "앱 ID를 입력해주세요."
-//        static let descriptionLabelTextIfRequestFail = "앱 ID를 다시 확인해주세요."
-//        static let emptyString = ""
-//    }
-//    
-//    private enum Design {
-//        static let backButtonTitle = "검색"
-//    }
-//}

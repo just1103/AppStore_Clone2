@@ -7,11 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		364AC9D928CF61E200A4B186 /* MockIdusLookupResult.json in Resources */ = {isa = PBXBuildFile; fileRef = 364AC9D528CF61E200A4B186 /* MockIdusLookupResult.json */; };
+		364AC9DA28CF61E200A4B186 /* MockIdusSearchResult.json in Resources */ = {isa = PBXBuildFile; fileRef = 364AC9D628CF61E200A4B186 /* MockIdusSearchResult.json */; };
+		364AC9DB28CF61E200A4B186 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AC9D728CF61E200A4B186 /* MockURLSession.swift */; };
+		364AC9DC28CF61E200A4B186 /* MockIdusAppItem.json in Resources */ = {isa = PBXBuildFile; fileRef = 364AC9D828CF61E200A4B186 /* MockIdusAppItem.json */; };
+		364AC9E028CF622600A4B186 /* AppSearchAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AC9DD28CF622500A4B186 /* AppSearchAPITests.swift */; };
+		364AC9E128CF622600A4B186 /* AppLookupAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AC9DE28CF622600A4B186 /* AppLookupAPITests.swift */; };
+		364AC9E228CF622600A4B186 /* MockURLSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AC9DF28CF622600A4B186 /* MockURLSessionTests.swift */; };
 		36C41C5028CC75DA006BC3B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C41C4F28CC75DA006BC3B2 /* AppDelegate.swift */; };
 		36C41C5228CC75DA006BC3B2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C41C5128CC75DA006BC3B2 /* SceneDelegate.swift */; };
 		36C41C5928CC75DC006BC3B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36C41C5828CC75DC006BC3B2 /* Assets.xcassets */; };
 		36C41C5C28CC75DC006BC3B2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36C41C5A28CC75DC006BC3B2 /* LaunchScreen.storyboard */; };
-		36C41C6728CC75DC006BC3B2 /* AppStoreClone2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C41C6628CC75DC006BC3B2 /* AppStoreClone2Tests.swift */; };
+		36C41C6728CC75DC006BC3B2 /* JSONDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C41C6628CC75DC006BC3B2 /* JSONDecodingTests.swift */; };
 		36C41C7128CC75DC006BC3B2 /* AppStoreClone2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C41C7028CC75DC006BC3B2 /* AppStoreClone2UITests.swift */; };
 		36C41C7328CC75DC006BC3B2 /* AppStoreClone2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C41C7228CC75DC006BC3B2 /* AppStoreClone2UITestsLaunchTests.swift */; };
 		36C41CE228CC7B42006BC3B2 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 36C41CE128CC7B42006BC3B2 /* RxCocoa */; };
@@ -64,6 +71,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		364AC9D528CF61E200A4B186 /* MockIdusLookupResult.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MockIdusLookupResult.json; sourceTree = "<group>"; };
+		364AC9D628CF61E200A4B186 /* MockIdusSearchResult.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MockIdusSearchResult.json; sourceTree = "<group>"; };
+		364AC9D728CF61E200A4B186 /* MockURLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
+		364AC9D828CF61E200A4B186 /* MockIdusAppItem.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MockIdusAppItem.json; sourceTree = "<group>"; };
+		364AC9DD28CF622500A4B186 /* AppSearchAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSearchAPITests.swift; sourceTree = "<group>"; };
+		364AC9DE28CF622600A4B186 /* AppLookupAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLookupAPITests.swift; sourceTree = "<group>"; };
+		364AC9DF28CF622600A4B186 /* MockURLSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockURLSessionTests.swift; sourceTree = "<group>"; };
 		36C41C4C28CC75DA006BC3B2 /* AppStoreClone2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppStoreClone2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36C41C4F28CC75DA006BC3B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		36C41C5128CC75DA006BC3B2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,7 +85,7 @@
 		36C41C5B28CC75DC006BC3B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		36C41C5D28CC75DC006BC3B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		36C41C6228CC75DC006BC3B2 /* AppStoreClone2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppStoreClone2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		36C41C6628CC75DC006BC3B2 /* AppStoreClone2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreClone2Tests.swift; sourceTree = "<group>"; };
+		36C41C6628CC75DC006BC3B2 /* JSONDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecodingTests.swift; sourceTree = "<group>"; };
 		36C41C6C28CC75DC006BC3B2 /* AppStoreClone2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppStoreClone2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		36C41C7028CC75DC006BC3B2 /* AppStoreClone2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreClone2UITests.swift; sourceTree = "<group>"; };
 		36C41C7228CC75DC006BC3B2 /* AppStoreClone2UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreClone2UITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -132,6 +146,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		364AC9D428CF61E200A4B186 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				364AC9D528CF61E200A4B186 /* MockIdusLookupResult.json */,
+				364AC9D628CF61E200A4B186 /* MockIdusSearchResult.json */,
+				364AC9D828CF61E200A4B186 /* MockIdusAppItem.json */,
+				364AC9D728CF61E200A4B186 /* MockURLSession.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
 		36C41C4328CC75DA006BC3B2 = {
 			isa = PBXGroup;
 			children = (
@@ -171,7 +196,11 @@
 		36C41C6528CC75DC006BC3B2 /* AppStoreClone2Tests */ = {
 			isa = PBXGroup;
 			children = (
-				36C41C6628CC75DC006BC3B2 /* AppStoreClone2Tests.swift */,
+				364AC9D428CF61E200A4B186 /* Mock */,
+				36C41C6628CC75DC006BC3B2 /* JSONDecodingTests.swift */,
+				364AC9DE28CF622600A4B186 /* AppLookupAPITests.swift */,
+				364AC9DD28CF622500A4B186 /* AppSearchAPITests.swift */,
+				364AC9DF28CF622600A4B186 /* MockURLSessionTests.swift */,
 			);
 			path = AppStoreClone2Tests;
 			sourceTree = "<group>";
@@ -241,7 +270,6 @@
 		36C41CF228CC7B96006BC3B2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				36C41D2C28CC8191006BC3B2 /* URLRequest+Initializer.swift */,
 				36C41CF328CC7B96006BC3B2 /* Array+Subscript.swift */,
 				36C41CF428CC7B96006BC3B2 /* UICollectionViewCell+Identifier.swift */,
 				36C41CF528CC7B96006BC3B2 /* Int+DigitWrapping.swift */,
@@ -278,6 +306,7 @@
 				36C41D0D28CC7B9E006BC3B2 /* NetworkProvider.swift */,
 				36C41D2528CC7F98006BC3B2 /* APIProtocol.swift */,
 				36C41D2428CC7F98006BC3B2 /* URLSessionProtocol.swift */,
+				36C41D2C28CC8191006BC3B2 /* URLRequest+Initializer.swift */,
 				36C41D0E28CC7B9E006BC3B2 /* NetworkError.swift */,
 				36C41D0F28CC7B9E006BC3B2 /* ItunesAPI */,
 			);
@@ -433,6 +462,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				364AC9D928CF61E200A4B186 /* MockIdusLookupResult.json in Resources */,
+				364AC9DC28CF61E200A4B186 /* MockIdusAppItem.json in Resources */,
+				364AC9DA28CF61E200A4B186 /* MockIdusSearchResult.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,7 +518,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36C41C6728CC75DC006BC3B2 /* AppStoreClone2Tests.swift in Sources */,
+				364AC9E028CF622600A4B186 /* AppSearchAPITests.swift in Sources */,
+				364AC9DB28CF61E200A4B186 /* MockURLSession.swift in Sources */,
+				364AC9E128CF622600A4B186 /* AppLookupAPITests.swift in Sources */,
+				364AC9E228CF622600A4B186 /* MockURLSessionTests.swift in Sources */,
+				36C41C6728CC75DC006BC3B2 /* JSONDecodingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

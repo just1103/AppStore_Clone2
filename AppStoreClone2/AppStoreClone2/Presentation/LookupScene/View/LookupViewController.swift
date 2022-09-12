@@ -29,6 +29,15 @@ final class LookupViewController: UIViewController {
         label.textColor = .systemRed
         return label
     }()
+    private let searchTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.isScrollEnabled = true
+        tableView.isUserInteractionEnabled = true
+        tableView.separatorStyle = .singleLine
+//        tableView.separatorInset.left = 0
+        return tableView
+    }()
     
     private var viewModel: LookupViewModel!
     private let searchTextDidReturn = PublishSubject<String>()

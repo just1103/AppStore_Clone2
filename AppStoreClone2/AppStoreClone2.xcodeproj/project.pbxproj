@@ -14,6 +14,9 @@
 		364AC9E028CF622600A4B186 /* AppSearchAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AC9DD28CF622500A4B186 /* AppSearchAPITests.swift */; };
 		364AC9E128CF622600A4B186 /* AppLookupAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AC9DE28CF622600A4B186 /* AppLookupAPITests.swift */; };
 		364AC9E228CF622600A4B186 /* MockURLSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AC9DF28CF622600A4B186 /* MockURLSessionTests.swift */; };
+		364AC9E428CF720A00A4B186 /* SearchTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AC9E328CF720A00A4B186 /* SearchTableCell.swift */; };
+		364AC9E728CF730A00A4B186 /* StarRatingStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AC9E528CF730A00A4B186 /* StarRatingStackView.swift */; };
+		364AC9E828CF730A00A4B186 /* StarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364AC9E628CF730A00A4B186 /* StarImageView.swift */; };
 		36C41C5028CC75DA006BC3B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C41C4F28CC75DA006BC3B2 /* AppDelegate.swift */; };
 		36C41C5228CC75DA006BC3B2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C41C5128CC75DA006BC3B2 /* SceneDelegate.swift */; };
 		36C41C5928CC75DC006BC3B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36C41C5828CC75DC006BC3B2 /* Assets.xcassets */; };
@@ -78,6 +81,9 @@
 		364AC9DD28CF622500A4B186 /* AppSearchAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSearchAPITests.swift; sourceTree = "<group>"; };
 		364AC9DE28CF622600A4B186 /* AppLookupAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLookupAPITests.swift; sourceTree = "<group>"; };
 		364AC9DF28CF622600A4B186 /* MockURLSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockURLSessionTests.swift; sourceTree = "<group>"; };
+		364AC9E328CF720A00A4B186 /* SearchTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableCell.swift; sourceTree = "<group>"; };
+		364AC9E528CF730A00A4B186 /* StarRatingStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarRatingStackView.swift; sourceTree = "<group>"; };
+		364AC9E628CF730A00A4B186 /* StarImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarImageView.swift; sourceTree = "<group>"; };
 		36C41C4C28CC75DA006BC3B2 /* AppStoreClone2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppStoreClone2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36C41C4F28CC75DA006BC3B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		36C41C5128CC75DA006BC3B2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -263,6 +269,9 @@
 			isa = PBXGroup;
 			children = (
 				36C41CED28CC7B72006BC3B2 /* LookupViewController.swift */,
+				364AC9E328CF720A00A4B186 /* SearchTableCell.swift */,
+				364AC9E528CF730A00A4B186 /* StarRatingStackView.swift */,
+				364AC9E628CF730A00A4B186 /* StarImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -483,10 +492,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				36C41D1728CC7B9E006BC3B2 /* NetworkProvider.swift in Sources */,
+				364AC9E428CF720A00A4B186 /* SearchTableCell.swift in Sources */,
 				36C41D0928CC7B96006BC3B2 /* ViewModelProtocol.swift in Sources */,
 				36C41D0328CC7B96006BC3B2 /* UITableViewCell+Identifier.swift in Sources */,
 				36C41CEF28CC7B72006BC3B2 /* LookupViewModel.swift in Sources */,
 				36C41D0828CC7B96006BC3B2 /* ImageCacheManager.swift in Sources */,
+				364AC9E828CF730A00A4B186 /* StarImageView.swift in Sources */,
 				36C41D1A28CC7B9E006BC3B2 /* AppItemDTO.swift in Sources */,
 				36C41D1928CC7B9E006BC3B2 /* SearchResultDTO.swift in Sources */,
 				36C41D2728CC7F98006BC3B2 /* URLSessionProtocol.swift in Sources */,
@@ -511,6 +522,7 @@
 				36C41CF128CC7B72006BC3B2 /* LookupViewController.swift in Sources */,
 				36C41D2D28CC8191006BC3B2 /* URLRequest+Initializer.swift in Sources */,
 				36C41C5228CC75DA006BC3B2 /* SceneDelegate.swift in Sources */,
+				364AC9E728CF730A00A4B186 /* StarRatingStackView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

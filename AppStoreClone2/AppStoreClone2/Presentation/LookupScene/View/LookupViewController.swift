@@ -35,6 +35,7 @@ final class LookupViewController: UIViewController {
         tableView.isScrollEnabled = true
         tableView.isUserInteractionEnabled = true
         tableView.separatorStyle = .singleLine
+        tableView.separatorInset.left = 6
         return tableView
     }()
     

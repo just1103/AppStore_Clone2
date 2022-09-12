@@ -10,6 +10,7 @@ import RxSwift
 @testable import AppStoreClone2
 
 class JSONDecodingTests: XCTestCase {
+    
     func test_SearchResultDTO타입_decode했을때_Parsing되는지_테스트() {
         guard
             let path = Bundle(for: type(of: self)).path(forResource: "MockIdusLookupResult", ofType: "json"),
@@ -53,4 +54,5 @@ class JSONDecodingTests: XCTestCase {
         XCTAssertEqual(result.userRatingCount, 238)
         XCTAssertEqual(result.fileSizeBytes, "124699648")
     }
+    
 }

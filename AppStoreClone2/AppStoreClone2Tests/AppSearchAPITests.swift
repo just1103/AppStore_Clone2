@@ -10,6 +10,7 @@ import RxSwift
 @testable import AppStoreClone2
 
 class AppSearchAPITests: XCTestCase {
+    
     var sut: NetworkProvider!
     var disposeBag: DisposeBag!
     let idusSearchText = "핸드메이드"
@@ -30,6 +31,7 @@ class AppSearchAPITests: XCTestCase {
     func test_Idus_AppID로_AppSearchAPI가_정상작동_하는지() {
         let expectation = XCTestExpectation(description: "AppSearchAPI 비동기 테스트")
 
+        // http://itunes.apple.com/search?country=kr&media=software&limit=30&term=핸드메이드
         let observable = sut.fetchData(
             api: ItunesAPI.AppSearch(searchText: idusSearchText),
             decodingType: SearchResultDTO.self

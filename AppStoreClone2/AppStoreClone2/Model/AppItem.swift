@@ -25,7 +25,7 @@ struct AppItem {
     let contentAdvisoryRating: String
     let formattedPrice: String
     
-    static func convert(appItemDTO: AppItemDTO) -> AppItem {
+    static func convert(_ appItemDTO: AppItemDTO) -> AppItem {
         return AppItem(
             artworkURL100: appItemDTO.artworkURL100,
             trackName: appItemDTO.trackName,

@@ -8,6 +8,7 @@
 import Foundation
 
 enum NetworkError: Error, LocalizedError {
+    
     case urlIsNil
     case invalidURL
     case statusCodeError
@@ -26,4 +27,5 @@ enum NetworkError: Error, LocalizedError {
 
         }
     }
+    
 }

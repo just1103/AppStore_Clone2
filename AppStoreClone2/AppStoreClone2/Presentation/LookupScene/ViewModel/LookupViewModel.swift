@@ -135,26 +135,31 @@ final class LookupViewModel: ViewModelProtocol {
                 
                 return self.fetchData(with: searchText)
                     .map { searchResultDTO -> [AppItem] in
-                        guard
-                            searchResultDTO.resultCount == 1,  // TODO: SearchAPI 사용 시 변경
-                            let appItemDTO = searchResultDTO.results.first
-                        else {
-                            return []
+                        let appItems = searchResultDTO.results.map { appItemDTO in
+                            AppItem.convert(appItemDTO)
                         }
-
-                        let appItem = [AppItem.convert(appItemDTO: appItemDTO)]
-
-                        return appItem
+                        return appItems
                     }
             }
             .asDriver(onErrorJustReturn: [])
     }
     
     private func fetchData(with searchText: String) -> Observable<SearchResultDTO> {
-        return NetworkProvider().fetchData(
-            api: ItunesAPI.AppLookup(appID: searchText),
-            decodingType: SearchResultDTO.self
-        )
+        // TODO: NetworkProvider가 처리하도록 역할 재분배
+        let isNumber = searchText.allSatisfy { $0.isNumber }
+        
+        // TODO: 추상화
+        if isNumber {
+            return NetworkProvider().fetchData(
+                api: ItunesAPI.AppLookup(appID: searchText),
+                decodingType: SearchResultDTO.self
+            )
+        } else {
+            return NetworkProvider().fetchData(
+                api: ItunesAPI.AppSearch(searchText: searchText),
+                decodingType: SearchResultDTO.self
+            )
+        }
     }
     
 }

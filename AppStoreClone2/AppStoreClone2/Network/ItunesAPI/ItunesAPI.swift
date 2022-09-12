@@ -1,10 +1,13 @@
 import Foundation
 
+protocol ItunesAPIRequestable { }
+
 struct ItunesAPI {
+    
     static let baseURL = "http://itunes.apple.com"
     
-    // http://itunes.apple.com/lookup?media=software&country=kr&id=872469884
-    struct AppLookup: Gettable {
+    struct AppLookup: Gettable, ItunesAPIRequestable {
+        // TODO: header 및 decodingType을 가지도록 개선
 //        private let baseURL = ItunesAPI.baseURL
 //        private let appID: String
 //        private var path = "/lookup"
@@ -16,7 +19,7 @@ struct ItunesAPI {
 //                "id": "\(appID)"
 //            ]
 //        }
-//        var url: URL? {  // TODO: header 및 decodingType을 가지도록 개선
+//        var url: URL? {
 //            return URL(string: "\(baseURL)\(path)\(parameters)")
 //        }
         
@@ -39,8 +42,7 @@ struct ItunesAPI {
         }
     }
     
-    // http://itunes.apple.com/search?country=kr&media=software&limit=30&term=핸드메이드
-    struct AppSearch: Gettable {
+    struct AppSearch: Gettable, ItunesAPIRequestable {
         var method: HttpMethod = .get
         var url: URL?
         

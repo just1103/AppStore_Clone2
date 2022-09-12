@@ -8,9 +8,10 @@
 import UIKit
 
 enum CoordinatorType {
-    case app
+    case app, tabBar
     case lookup, detail
     case screenshot
+    case favorite
 }
 
 protocol CoordinatorProtocol: AnyObject {

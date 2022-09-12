@@ -8,28 +8,36 @@
 import UIKit
 
 final class LookupCoordinator: CoordinatorProtocol {
+    
     // MARK: - Properties
-    var navigationController: UINavigationController?
+    
+    var navigationController: UINavigationController? = UINavigationController()
     var childCoordinators = [CoordinatorProtocol]()
     var type: CoordinatorType = .lookup
     
-    // MARK: - Initializers
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
-    }
-    
     // MARK: - Methods
-    func start() {
-        showLookupPage()
-    }
+    func start() {}
     
-    private func showLookupPage() {
-        guard let navigationController = navigationController else { return }
+    func createViewController() -> UINavigationController {
         let lookupViewModel = LookupViewModel(coordinator: self)
         let lookupViewController = LookupViewController(viewModel: lookupViewModel)
-  
-        navigationController.pushViewController(lookupViewController, animated: false)
+        navigationController = UINavigationController(rootViewController: lookupViewController)
+//        navigationController?.navigationBar.isHidden = true
+        
+        guard let navigationController = navigationController else {
+            return UINavigationController()
+        }
+
+        return navigationController
     }
+    
+//    private func showLookupPage() {
+//        guard let navigationController = navigationController else { return }
+//        let lookupViewModel = LookupViewModel(coordinator: self)
+//        let lookupViewController = LookupViewController(viewModel: lookupViewModel)
+//  
+//        navigationController.pushViewController(lookupViewController, animated: false)
+//    }
         
 //    func showDetailPage(with appItem: AppItem) {
 //        guard let navigationController = navigationController else { return }
